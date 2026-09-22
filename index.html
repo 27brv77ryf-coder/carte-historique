@@ -33,6 +33,9 @@ html, body {
 
 var map = L.map('map').setView([47.7757, 0.8907], 18);
 
+
+/* Fond OpenStreetMap */
+
 var osm = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -41,6 +44,9 @@ var osm = L.tileLayer(
         attribution: '&copy; OpenStreetMap contributors'
     }
 ).addTo(map);
+
+
+/* Carte historique */
 
 var historique = L.tileLayer(
     'cartes/test_roches/{z}/{x}/{y}.png',
@@ -52,12 +58,22 @@ var historique = L.tileLayer(
     }
 );
 
+
+/* Bouton de sélection des couches */
+
+var couchesBase = {
+    "OpenStreetMap": osm
+};
+
+var couchesSuperposees = {
+    "Carte historique": historique
+};
+
 L.control.layers(
+    couchesBase,
+    couchesSuperposees,
     {
-        "OpenStreetMap": osm
-    },
-    {
-        "Carte historique": historique
+        collapsed: false
     }
 ).addTo(map);
 
