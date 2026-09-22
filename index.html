@@ -1,71 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ma Carte Historique</title>
-  <!-- Outils Leaflet -->
+  <meta charset="utf-8">
+  <title>Test Simple</title>
   <link rel="stylesheet" href="https://unpkg.com" />
   <script src="https://unpkg.com"></script>
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; width: 100%; }
-    #carte { width: 100%; height: 100%; }
-    .panneau-transparence {
-      background: white; padding: 10px; border-radius: 5px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.4); font-family: sans-serif; font-size: 14px;
-    }
-    .panneau-transparence input { vertical-align: middle; width: 120px; margin-left: 5px; }
+    html, body, #carte { margin:0; padding:0; height:100%; width:100%; }
   </style>
 </head>
 <body>
-
   <div id="carte"></div>
-
   <script>
-    // 1. Création de la carte avec zoom max à 20 (Par défaut centrée au centre du monde)
-    var map = L.map('carte', { maxZoom: 20 }).setView([0, 0], 2);
-  
-    // 2. Fond de carte OpenStreetMap
-    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 20,
+    // Une carte simple centrée sur la France, sans piège
+    var map = L.map('carte').setView([46.6033, 1.8883], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap'
     }).addTo(map);
-
-    // 3. Appel de VOS tuiles hébergées juste à côté sur ce GitHub
-    var carteAncienne = L.tileLayer('./{z}/{x}/{y}.png', {
-      minZoom: 10,
-      maxZoom: 20,
-      opacity: 0.8
-    }).addTo(map);
-
-    // 4. Système magique de recentrage automatique dès qu'une tuile est lue
-    carteAncienne.on('tileload', function(event) {
-      // Si on détecte une tuile de votre carte au zoom 10, on zoome automatiquement dessus
-      var z = event.tile.src; 
-      // Calcul automatique pour recentrer la carte sur vos coordonnées sans les connaître à l'avance
-    });
-
-    // Option de sécurité pour forcer un repère si besoin
-    setTimeout(function() {
-       // Si vos tuiles ne se centrent pas, on pourra forcer les coordonnées exactes ici
-    }, 1000);
-
-    // 5. Menu Liste
-    var overlays = { "Afficher la Carte Ancienne": carteAncienne };
-    L.control.layers(null, overlays, { collapsed: false }).addTo(map);
-
-    // 6. Curseur de Transparence
-    var controleTransparence = L.control({ position: 'topright' });
-    controleTransparence.onAdd = function (map) {
-      var div = L.DomUtil.create('div', 'panneau-transparence');
-      div.innerHTML = '<b>Transparence</b><br><input id="curseur-opacite" type="range" min="0" max="100" value="80">';
-      return div;
-    };
-    controleTransparence.addTo(map);
-
-    document.getElementById('curseur-opacite').addEventListener('input', function (e) {
-      carteAncienne.setOpacity(e.target.value / 100);
-    });
   </script>
 </body>
 </html>
