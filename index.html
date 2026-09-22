@@ -1,22 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Test Simple</title>
-  <link rel="stylesheet" href="https://unpkg.com" />
-  <script src="https://unpkg.com"></script>
-  <style>
-    html, body, #carte { margin:0; padding:0; height:100%; width:100%; }
-  </style>
-</head>
-<body>
-  <div id="carte"></div>
-  <script>
-    // Une carte simple centrée sur la France, sans piège
-    var map = L.map('carte').setView([46.6033, 1.8883], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap'
-    }).addTo(map);
-  </script>
-</body>
-</html>
+<!DOCTYPE html> <html lang="fr"> <head> <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Carte historique</title>
+
+<!-- Leaflet CSS -->
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQ3e9Z4Xj9G6GQ8Z5K5Q5Q5Q5Q5Q5Q="
+    crossorigin=""
+/>
+
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+</head> <body>
+<div id="map"></div>
+
+<!-- Leaflet JavaScript -->
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="">
+</script>
+
+<script>
+
+    // Création de la carte
+    const map = L.map('map').setView([47.3941, 0.6848], 12);
+
+    // Fond OpenStreetMap
+    const osm = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 19,
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }
+    );
+
+    osm.addTo(map);
+
+</script>
+
+</body> </html>
