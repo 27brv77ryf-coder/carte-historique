@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ma carte</title>
+<title>Carte historique</title>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 <style>
 html, body {
     margin: 0;
@@ -12,24 +14,59 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
 #map {
     width: 100%;
     height: 100%;
 }
 </style>
 </head>
+
 <body>
+
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+
+// Création de la carte
 var map = L.map('map').setView([47.3941, 0.6848], 12);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+
+// Fond OpenStreetMap
+var osm = L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }
+).addTo(map);
+
+
+// Carte historique
+var historique = L.tileLayer(
+    '12/{x}/{y}.png',
+    {
+        minZoom: 12,
+        maxZoom: 12,
+        opacity: 0.7,
+        attribution: 'Carte historique'
+    }
+).addTo(map);
+
+
+// Contrôle des couches
+var fonds = {
+    "OpenStreetMap": osm
+};
+
+var cartes = {
+    "Carte historique": historique
+};
+
+L.control.layers(fonds, cartes).addTo(map);
+
 </script>
 
 </body>
