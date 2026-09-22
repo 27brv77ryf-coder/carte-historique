@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Carte historique</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -30,26 +31,34 @@ html, body {
 
 <script>
 
+/* Position de départ : Les Roches-l'Évêque */
 var map = L.map('map').setView([47.7757, 0.8907], 18);
 
+
+/* Fond OpenStreetMap */
 var osm = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
-        maxZoom: 19,
+        minZoom: 10,
+        maxZoom: 20,
         attribution: '&copy; OpenStreetMap contributors'
     }
 ).addTo(map);
 
+
+/* Carte historique */
 var historique = L.tileLayer(
-    '18/{x}/{y}.png',
+    'cartes/test_roches/{z}/{x}/{y}.png',
     {
-        minZoom: 18,
-        maxZoom: 18,
+        minZoom: 10,
+        maxZoom: 20,
         opacity: 0.8,
         attribution: 'Carte historique'
     }
 );
 
+
+/* Menu des couches */
 L.control.layers(
     {
         "OpenStreetMap": osm
