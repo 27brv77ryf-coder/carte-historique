@@ -30,11 +30,8 @@ html, body {
 
 <script>
 
-// Création de la carte
-var map = L.map('map').setView([47.3941, 0.6848], 12);
+var map = L.map('map').setView([47.7757, 0.8907], 18);
 
-
-// Fond OpenStreetMap
 var osm = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -43,29 +40,24 @@ var osm = L.tileLayer(
     }
 ).addTo(map);
 
-
-// Carte historique
 var historique = L.tileLayer(
     '12/{x}/{y}.png',
     {
         minZoom: 12,
-        maxZoom: 12,
+        maxZoom: 19,
         opacity: 0.7,
         attribution: 'Carte historique'
     }
+);
+
+L.control.layers(
+    {
+        "OpenStreetMap": osm
+    },
+    {
+        "Carte historique": historique
+    }
 ).addTo(map);
-
-
-// Contrôle des couches
-var fonds = {
-    "OpenStreetMap": osm
-};
-
-var cartes = {
-    "Carte historique": historique
-};
-
-L.control.layers(fonds, cartes).addTo(map);
 
 </script>
 
