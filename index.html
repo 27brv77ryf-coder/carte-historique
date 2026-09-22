@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Carte Historique</title>
+  <!-- Outils Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com" />
+  <script src="https://unpkg.com"></script>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; width: 100%; }
+    #carte { width: 100%; height: 100%; }
+    .panneau-transparence {
+      background: white; padding: 10px; border-radius: 5px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4); font-family: sans-serif; font-size: 14px;
+    }
+    .panneau-transparence input { vertical-align: middle; width: 120px; margin-left: 5px; }
+  </style>
+</head>
+<body>
+
+  <div id="carte"></div>
+
+  <script>
+    // 1. Détection automatique du centre de votre carte ancienne
+    // Nous activons un zoom max à 20 (votre exigence)
+    var map = L.map('carte', { maxZoom: 20 }).setView([0, 0], 2);
+
+    // 2. Fond de carte OpenStreetMap
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 20,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // 3. Appel de VOS tuiles hébergées juste à côté sur ce GitHub
+    // L'adresse relative './{z}/{x}/{y}.png' va chercher vos dossiers 10, 11, etc.
+    var carteAncienne = L.tileLayer('./{z}/{x}/{y}.png', {
+      minZoom: 10,
+      maxZoom: 20,
+      opacity: 0.8
+    }).addTo(map);
+
+    // Zoomer et recentrer automatiquement la carte dès qu'une tuile est chargée
+    carteAncienne.on('tileload', function() {
+      // Ajuste la vue sur vos tuiles si ce n'est pas déjà fait
+      if (map.getZoom() < 10) { map.setView(carteAncienne._tilesFrame ? map.getCenter() : [48.8566, 2.3522], 12); }
+    });
+
+    // 4. Menu Liste
+    var overlays = { "Afficher la Carte Ancienne": carteAncienne };
+    L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+
+    // 5. Curseur de Transparence
+    var controleTransparence = L.control({ position: 'topright' });
+    controleTransparence.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'panneau-transparence');
+      div.innerHTML = '<b>Transparence</b><br><input id="curseur-opacite" type="range" min="0" max="100" value="80">';
+      return div;
+    };
+    controleTransparence.addTo(map);
+
+    document.getElementById('curseur-opacite').addEventListener('input', function (e) {
+      carteAncienne.setOpacity(e.target.value / 100);
+    });
+  </script>
+</body>
+</html>
